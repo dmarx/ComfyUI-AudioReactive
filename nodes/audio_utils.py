@@ -2,6 +2,12 @@
 porting useful stuff from vktrs: https://github.com/dmarx/video-killed-the-radio-star/blob/main/Video_Killed_The_Radio_Star_Defusion.ipynb
 """
 
+import librosa
+import numpy as np
+import scipy
+import subprocess
+from sklearn.cluster import KMeans
+
 ##############################################################
 
 # audio processing
