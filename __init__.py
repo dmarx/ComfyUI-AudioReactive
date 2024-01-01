@@ -1,5 +1,10 @@
 from nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
 
+from loguru import logger
+
+logger.info(NODE_CLASS_MAPPINGS)
+logger.info(NODE_DISPLAY_NAME_MAPPINGS)
+
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
 
 import os
