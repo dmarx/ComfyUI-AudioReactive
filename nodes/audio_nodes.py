@@ -77,7 +77,7 @@ class OpRms:
     def main(self, signal:dict, **kargs):
         y, sr = signal.get("y"), signal.get("sr")
         y, sr = self.f(y, sr)
-        outv = {"y":y, "sr":sr)
+        outv = {"y":y, "sr":sr}
         return (outv,)
 
 # TODO: all the other ops
