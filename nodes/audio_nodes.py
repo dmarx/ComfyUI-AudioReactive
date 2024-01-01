@@ -54,7 +54,7 @@ simple_signal_operations = {
 }
 
 # can i just metaclass this?
-class OpRms:
+class OpRms(SimpleSignalOperation):
     f = simple_signal_operations['rms']
 
 # TODO: all the other ops
