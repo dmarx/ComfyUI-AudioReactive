@@ -4,26 +4,26 @@ from types import Callable
 CATEGORY = "AudioReactive"
 
 
-class SimpleSignalOperation:
-    CATEGORY=CATEGORY
-    RETURN_TYPES=("SIGNAL",)
-    FUNCTION = "main"
+# class SimpleSignalOperation:
+#     CATEGORY=CATEGORY
+#     RETURN_TYPES=("SIGNAL",)
+#     FUNCTION = "main"
 
-    f: Callable = None # lazy abstract method
+#     f: Callable = None # lazy abstract method
   
-    @classmethod
-    def INPUT_TYPES(cls):
-        outv = {
-            "required": {
-                "signal": ("SIGNAL",{}),
-            }
-        }
-        return outv
+#     @classmethod
+#     def INPUT_TYPES(cls):
+#         outv = {
+#             "required": {
+#                 "signal": ("SIGNAL",{}),
+#             }
+#         }
+#         return outv
 
-    def main(self, signal, **kargs):
-        y, sr = signal.get("y"), signal.get("sr")
-        y, sr = self.f(y, sr)
-        return {"y":y, "sr":sr)
+#     def main(self, signal, **kargs):
+#         y, sr = signal.get("y"), signal.get("sr")
+#         y, sr = self.f(y, sr)
+#         return {"y":y, "sr":sr)
 
 
 simple_signal_operations = {
@@ -54,8 +54,30 @@ simple_signal_operations = {
 }
 
 # can i just metaclass this?
-class OpRms(SimpleSignalOperation):
+#class OpRms(SimpleSignalOperation):
+class OpRms:
     f = simple_signal_operations['rms']
+    
+#class SimpleSignalOperation:
+    CATEGORY=CATEGORY
+    RETURN_TYPES=("SIGNAL",)
+    FUNCTION = "main"
+
+    #f: Callable = None # lazy abstract method
+  
+    @classmethod
+    def INPUT_TYPES(cls):
+        outv = {
+            "required": {
+                "signal": ("SIGNAL",{}),
+            }
+        }
+        return outv
+
+    def main(self, signal, **kargs):
+        y, sr = signal.get("y"), signal.get("sr")
+        y, sr = self.f(y, sr)
+        return {"y":y, "sr":sr)
 
 # TODO: all the other ops
 
