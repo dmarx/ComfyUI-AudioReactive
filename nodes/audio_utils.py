@@ -205,8 +205,8 @@ def get_path_to_stems():
 def ensure_stems_separated():
     stems_outpath = get_path_to_stems()
     stems_path = str(stems_outpath.parent.parent)
-    if not stems_outpath.exists():
-        !demucs -n htdemucs_ft -o "{stems_path}" "{storyboard.params.audio_fpath}"
+    #if not stems_outpath.exists():
+    #    !demucs -n htdemucs_ft -o "{stems_path}" "{storyboard.params.audio_fpath}"
 
 def get_stem(instrument_name):
     ensure_stems_separated()
