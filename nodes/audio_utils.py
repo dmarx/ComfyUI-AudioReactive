@@ -186,5 +186,72 @@ def butter_bandpass_filter(y, sr, lowcut, highcut, order=10):
     return y
 
 ########################################################################
+#########################################
+
+def get_path_to_stems():
+    workspace, storyboard = load_storyboard()
+    assets_root = Path(workspace.application_root) / 'shared_assets'
+    #stems_path = root / "stems"
+    stems_path = assets_root / "stems"
+    stems_outpath = stems_path / 'htdemucs_ft' / Path(storyboard.params.audio_fpath).stem
+    return stems_outpath
+
+def ensure_stems_separated():
+    stems_outpath = get_path_to_stems()
+    stems_path = str(stems_outpath.parent.parent)
+    if not stems_outpath.exists():
+        !demucs -n htdemucs_ft -o "{stems_path}" "{storyboard.params.audio_fpath}"
+
+def get_stem(instrument_name):
+    ensure_stems_separated()
+    stems_outpath = get_path_to_stems()
+    stem_fpaths  = list(stems_outpath.glob('*.wav'))
+
+    for stem_fpath in stem_fpaths:
+        if instrument_name in str(stem_fpath):
+            y, sr = librosa.load(stem_fpath)
+            return y, sr
+    raise ValueError(
+        f"Unable to locate stem for instrument: {instrument_name}\n"
+        f"in folder: {stems_outpath}"
+    )
+
+##########################################################################################################
+
+# deforum compatibility sprint
+
+
+import math
+import numpy as np
+
+def build_eval_scope(storyboard):
+    # preload eval scope with math stuff
+    math_env = {
+        "abs": abs,
+        "max": max,
+        "min": min,
+        "pow": pow,
+        "round": round,
+        "np": np,
+        "__builtins__": None,
+    }
+    math_env.update(
+        {key: getattr(math, key) for key in dir(math) if "_" not in key}
+    )
+
+    # add signals to scope
+    for signal_name, sig_curve in storyboard.signals.items():
+        sig_curve = OmegaConf.to_container(sig_curve) # zomg...
+        curve = load_curve(sig_curve)
+        math_env[signal_name] = curve
+    return math_env
+
+
+#eval(signal_mappings['noise_curve'], math_env, t=0)
+#math_env['t']=0
+#eval(signal_mappings['noise_curve'], math_env)
+
+
+#################
 
 
