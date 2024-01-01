@@ -36,81 +36,81 @@ class SimpleSignalOperation:
 
 
 #     'novelty': librosa.onset.onset_strength,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class OpNovelty(SimpleSignalOperation):
+    f = simple_signal_operations['novelty']
 
   
 
 #     'predominant_pulse': librosa.beat.plp,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Oppredominant_pulse(SimpleSignalOperation):
+    f = simple_signal_operations['predominant_pulse']
 
 #     'bandpass': bandpass,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opbandpass(SimpleSignalOperation):
+    f = simple_signal_operations['bandpass']
 
 #     'harmonic': lambda y, sr: librosa.effects.harmonic(y=y),
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opharmonic(SimpleSignalOperation):
+    f = simple_signal_operations['harmonic']
 
 #     'percussive': lambda y, sr: librosa.effects.percussive(y=y),
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Oppercussive(SimpleSignalOperation):
+    f = simple_signal_operations['percussive']
 #     ##########
-#     'pow2': lambda y, sr: y**2,
 
-class OpNovelty:
-    f = simple_signal_operations['rms']
+#     'pow2': lambda y, sr: y**2,
+class Oppow2(SimpleSignalOperation):
+    f = simple_signal_operations['pow2']
 
 #     'stretch': stretch,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opstretch(SimpleSignalOperation):
+    f = simple_signal_operations['stretch']
 
 #     'sqrt': sqrt,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opsqrt(SimpleSignalOperation):
+    f = simple_signal_operations['sqrt']
 
 #     'smoosh': smoosh,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opsmoosh(SimpleSignalOperation):
+    f = simple_signal_operations['smoosh']
 
 #     'pow':_pow,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Oppow(SimpleSignalOperation):
+    f = simple_signal_operations['pow']
 #     #################
 
 #     'smooth': smooth,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opsmooth(SimpleSignalOperation):
+    f = simple_signal_operations['smooth']
 
 #     'sustain': sustain,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opsustain(SimpleSignalOperation):
+    f = simple_signal_operations['sustain']
 #     # #########
 
 #     'normalize': normalize,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class OpNormalize(SimpleSignalOperation):
+    f = simple_signal_operations['normalize']
 
 #     'abs': lambda y, sr: np.abs(np.abs(y)),
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opabs(SimpleSignalOperation):
+    f = simple_signal_operations['abs']
 
 #     'threshold': threshold,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opthreshold(SimpleSignalOperation):
+    f = simple_signal_operations['threshold']
   
 #     'clamp': clamp,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opclamp(SimpleSignalOperation):
+    f = simple_signal_operations['clamp']
   
 #     'modulo': modulo,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class Opmodulo(SimpleSignalOperation):
+    f = simple_signal_operations['modulo']
   
 #     'quantize':quantize,
-class OpNovelty:
-    f = simple_signal_operations['rms']
+class OpQuantize(SimpleSignalOperation):
+    f = simple_signal_operations['quantize']
 # }
 
 
