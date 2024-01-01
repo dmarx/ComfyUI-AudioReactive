@@ -254,4 +254,191 @@ def build_eval_scope(storyboard):
 
 #################
 
+custom_signal_fpath = '' # @param {'type':'string'}
 
+def get_user_specified_signal():
+    y, sr = librosa.load(custom_signal_fpath)
+    return y, sr
+
+###################
+
+import numpy as np
+from scipy import signal
+from inspect import signature
+from functools import partial
+from scipy.signal import find_peaks
+from sklearn.cluster import KMeans
+#sklearn_extra.cluster.KMedoids
+
+# all operations must either have signature (y, sr) or return a function which does
+
+# def rms(y, sr):
+#     return librosa.feature.rms(y=y)
+
+# def novelty(y, sr):
+#     return librosa.onset.onset_strength(y, sr)
+
+# def predominant_pulse(y, sr):
+#     return librosa.beat.plp(y, sr)
+
+def pow2(y, sr):
+    return y**2
+
+def sqrt(y, sr):
+    return y**-2
+
+
+# so... apparently `pow` is a python builtin. whoops. Meh, fuck it.
+def _pow(k):
+    def pow_(y, sr):
+        return y**k
+    return pow_
+
+# def stretch(k=2):
+#     return _pow(k)
+
+# def smoosh(k=2):
+#     return _pow(-k)
+
+def stretch(y, sr):
+    y = normalize(y, sr)
+    return normalize(y**2, sr)
+
+def smoosh(y, sr):
+    y = normalize(y, sr)
+    return normalize(y**.5, sr)
+
+def normalize(y, sr):
+    normalized_signal = np.abs(y).ravel()
+    normalized_signal /= max(normalized_signal)
+    return normalized_signal
+
+######################################
+
+def smooth(k=150):
+    k=int(k)
+    def smooth_(y, sr=None):
+        win_smooth = signal.windows.hann(k)
+        filtered = signal.convolve(y, win_smooth, mode='same') / sum(win_smooth)
+        return filtered
+    return smooth_
+
+def sustain(k=500):
+    k=int(k)
+    def sustain_(y, sr=None):
+        win_sustain = signal.windows.hann(2*k)
+        win_sustain[:k]=0
+        filtered = signal.convolve(y.ravel(), win_sustain, mode='same') / sum(win_sustain)
+        return filtered
+    return sustain_
+
+
+# TODO: decay() - sustain with an exponential window
+
+#####################333
+
+def bandpass(low: float, high:float):
+    return partial(butter_bandpass_filter, lowcut=low, highcut=high)
+
+def threshold(low):
+    def f(y, sr):
+        y[y<low] = 0
+        return y
+    return f
+
+def clamp(high):
+    def f(y, sr):
+        y[y>high] = high
+        return y
+    return f
+
+
+###############################3
+
+
+# def peak_detection(y, sr):
+#     peaks, _ = find_peaks(y)
+#     return peaks
+
+# TODO: support offset, so user could e.g. take either every even or every odd peak.
+def modulo(k=2, offset=0):
+    #k=int(k)
+    def modulo_(y, sr=None):
+        #peaks = peak_detection(y, sr)
+        peaks, _ = find_peaks(y)
+        #selected_peaks = peaks[::k]  # Select every kth peak
+        selected_peaks=[]
+        for peak_index, peak in enumerate(peaks.ravel()):
+            if (peak_index + offset) % k == 0:
+                selected_peaks.append(peak)
+        print(selected_peaks)
+        selected_peaks = np.array(selected_peaks)
+        new_signal = np.zeros_like(y)
+        new_signal[selected_peaks] = y[selected_peaks]  # Build a new signal with only the selected peaks
+        return new_signal
+    return modulo_
+
+#################################
+
+# chatgpt wrote this, needs to be tested. also, i might want to use medoids rather than means
+
+
+
+def quantize(k=1):
+    k=int(k)
+    # why doesn't it respect `k` in the closure scope? Works fine for modulo(). weird.
+    #def quantize_(y, sr=None):
+    def quantize_(y, sr=None, K=k):
+        k=K
+        # Remove zero values
+        nonzero_values = y[y > 0].reshape(-1, 1)
+
+        # If the number of nonzero values is less than k, reduce k
+        if nonzero_values.shape[0] < k:
+            k = nonzero_values.shape[0]
+
+        # Perform k-means clustering
+        kmeans = KMeans(n_clusters=k)
+        kmeans.fit(nonzero_values)
+
+        # Replace each value with the centroid of its cluster
+        print(f"cluster centers: {np.unique(kmeans.cluster_centers_)}")
+        quantized_values = kmeans.cluster_centers_[kmeans.labels_].flatten()
+
+        # Create a new signal
+        quantized_signal = np.zeros_like(y)
+        quantized_signal[y > 0] = quantized_values
+        return quantized_signal
+    return quantize_
+
+#####################################3
+
+# TODO: add ability for user to do stuff via idiomatic `keyframed` rather than convolving signals
+
+# # TODO: add operations: slice/isolate, mute, shift_y/truncate/drop (subtract some value from amplitude)
+simple_signal_operations = {
+    'raw': lambda y, sr: y,
+    ##########
+    'rms': lambda y, sr: normalize(librosa.feature.rms(y=y).ravel(), sr),
+    'novelty': librosa.onset.onset_strength,
+    'predominant_pulse': librosa.beat.plp,
+    'bandpass': bandpass,
+    'harmonic': lambda y, sr: librosa.effects.harmonic(y=y),
+    'percussive': lambda y, sr: librosa.effects.percussive(y=y),
+    ##########
+    'pow2': lambda y, sr: y**2,
+    'stretch': stretch,
+    'sqrt': sqrt,
+    'smoosh': smoosh,
+    'pow':_pow,
+    #################
+    'smooth': smooth,
+    'sustain': sustain,
+    # #########
+    'normalize': normalize,
+    'abs': lambda y, sr: np.abs(np.abs(y)),
+    'threshold': threshold,
+    'clamp': clamp,
+    'modulo': modulo,
+    'quantize':quantize,
+}
