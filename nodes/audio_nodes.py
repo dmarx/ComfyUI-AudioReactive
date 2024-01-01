@@ -1,7 +1,7 @@
 from .audio_utils import simple_signal_operations
 from types import Callable
 
-CATEGORY = "keyframed/audioreactivity"
+CATEGORY = "AudioReactive"
 
 
 class SimpleSignalOperation:
