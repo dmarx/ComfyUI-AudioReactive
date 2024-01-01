@@ -115,10 +115,25 @@ class OpRms(SimpleSignalOperation):
 
 
 NODE_CLASS_MAPPINGS = {
-    "OpRms": OpRms,
+"OpNovelty":OpNovelty,
+"OpPredominant_pulse":OpPredominant_pulse,
+"OpBandpass":OpBandpass,
+"OpHarmonic":OpHarmonic, 
+"OpPercussive":OpPercussive,
+"OpPow2":OpPow2,
+"OpStretch":OpStretch,
+"OpSqrt":OpSqrt,
+"OpSmoosh":OpSmoosh,
+"OpPow":OpPow,
+"OpSmooth":OpSmooth,
+"OpSustain":OpSustain,
+"OpNormalize":OpNormalize,
+"OpAbs":OpAbs,
+"OpThreshold":OpThreshold,
+"OpClamp":OpClamp,
+"OpModulo":OpModulo,
+"OpQuantize":OpQuantize,
+"OpRms":OpRms,
 }
 
-# A dictionary that contains the friendly/humanly readable titles for the nodes
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "OpRms": OpRms.alias(),
-}
+NODE_DISPLAY_NAME_MAPPINGS = {k:v.alias() for k,v in NODE_CLASS_MAPPINGS.items()}
