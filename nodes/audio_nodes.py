@@ -18,7 +18,6 @@ class SimpleSignalOperation:
     def f(self, *args, **kwargs):
         return simple_signal_operations[self._f](*args, **kwargs)
 
-    @property
     def alias(self):
         return f"{self._f.title()} (Audio Op)"
   
@@ -120,5 +119,5 @@ NODE_CLASS_MAPPINGS = {
 
 # A dictionary that contains the friendly/humanly readable titles for the nodes
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "OpRms": OpRms.alias
+    "OpRms": OpRms.alias(),
 }
