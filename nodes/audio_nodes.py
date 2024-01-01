@@ -18,8 +18,9 @@ class SimpleSignalOperation:
     def f(self, *args, **kwargs):
         return simple_signal_operations[self._f](*args, **kwargs)
 
-    def alias(self):
-        return f"{self._f.title()} (Audio Op)"
+    @classmethod
+    def alias(cls):
+        return f"{cls._f.title()} (Audio Op)"
   
     @classmethod
     def INPUT_TYPES(cls):
