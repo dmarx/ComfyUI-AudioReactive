@@ -29,32 +29,32 @@ CATEGORY = "AudioReactive"
 #         return {"y":y, "sr":sr)
 
 
-simple_signal_operations = {
-    'raw': lambda y, sr: y,
-    ##########
-    'rms': lambda y, sr: normalize(librosa.feature.rms(y=y).ravel(), sr),
-    'novelty': librosa.onset.onset_strength,
-    'predominant_pulse': librosa.beat.plp,
-    'bandpass': bandpass,
-    'harmonic': lambda y, sr: librosa.effects.harmonic(y=y),
-    'percussive': lambda y, sr: librosa.effects.percussive(y=y),
-    ##########
-    'pow2': lambda y, sr: y**2,
-    'stretch': stretch,
-    'sqrt': sqrt,
-    'smoosh': smoosh,
-    'pow':_pow,
-    #################
-    'smooth': smooth,
-    'sustain': sustain,
-    # #########
-    'normalize': normalize,
-    'abs': lambda y, sr: np.abs(np.abs(y)),
-    'threshold': threshold,
-    'clamp': clamp,
-    'modulo': modulo,
-    'quantize':quantize,
-}
+# simple_signal_operations = {
+#     'raw': lambda y, sr: y,
+#     ##########
+#     'rms': lambda y, sr: normalize(librosa.feature.rms(y=y).ravel(), sr),
+#     'novelty': librosa.onset.onset_strength,
+#     'predominant_pulse': librosa.beat.plp,
+#     'bandpass': bandpass,
+#     'harmonic': lambda y, sr: librosa.effects.harmonic(y=y),
+#     'percussive': lambda y, sr: librosa.effects.percussive(y=y),
+#     ##########
+#     'pow2': lambda y, sr: y**2,
+#     'stretch': stretch,
+#     'sqrt': sqrt,
+#     'smoosh': smoosh,
+#     'pow':_pow,
+#     #################
+#     'smooth': smooth,
+#     'sustain': sustain,
+#     # #########
+#     'normalize': normalize,
+#     'abs': lambda y, sr: np.abs(np.abs(y)),
+#     'threshold': threshold,
+#     'clamp': clamp,
+#     'modulo': modulo,
+#     'quantize':quantize,
+# }
 
 # can i just metaclass this?
 #class OpRms(SimpleSignalOperation):
