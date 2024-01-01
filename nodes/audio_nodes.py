@@ -116,31 +116,31 @@ class OpNovelty:
 
 # can i just metaclass this?
 class OpRms(SimpleSignalOperation):
+    f = simple_signal_operations['rms']
+    
 #     'rms': lambda y, sr: normalize(librosa.feature.rms(y=y).ravel(), sr),
 #class OpRms:
-    f = simple_signal_operations['rms']
+# #class SimpleSignalOperation:
+#     CATEGORY=CATEGORY
+#     RETURN_TYPES=("SIGNAL",)
+#     FUNCTION = "main"
 
-#class SimpleSignalOperation:
-    CATEGORY=CATEGORY
-    RETURN_TYPES=("SIGNAL",)
-    FUNCTION = "main"
-
-    #f: Callable = None # lazy abstract method
+#     #f: Callable = None # lazy abstract method
   
-    @classmethod
-    def INPUT_TYPES(cls):
-        outv = {
-            "required": {
-                "signal": ("SIGNAL",{}),
-            }
-        }
-        return outv
+#     @classmethod
+#     def INPUT_TYPES(cls):
+#         outv = {
+#             "required": {
+#                 "signal": ("SIGNAL",{}),
+#             }
+#         }
+#         return outv
 
-    def main(self, signal:dict, **kargs):
-        y, sr = signal.get("y"), signal.get("sr")
-        y, sr = self.f(y, sr)
-        outv = {"y":y, "sr":sr}
-        return (outv,)
+#     def main(self, signal:dict, **kargs):
+#         y, sr = signal.get("y"), signal.get("sr")
+#         y, sr = self.f(y, sr)
+#         outv = {"y":y, "sr":sr}
+#         return (outv,)
 
 # TODO: all the other ops
 
