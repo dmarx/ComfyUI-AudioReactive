@@ -1,6 +1,9 @@
 from .audio_utils import simple_signal_operations
 #from typing import Callable
 
+import numpy as np
+import librosa
+
 CATEGORY = "AudioReactive"
 
 
