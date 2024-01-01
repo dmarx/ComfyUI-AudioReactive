@@ -12,7 +12,15 @@ class SimpleSignalOperation:
     RETURN_TYPES=("SIGNAL",)
     FUNCTION = "main"
 
-    f: Callable = None # lazy abstract method
+    #f: Callable = None # lazy abstract method
+    _f: str = ''
+
+    def f(self, *args, **kwargs):
+        return simple_signal_operations[self._f](*args, **kwargs)
+
+    @property
+    def alias(self):
+        return f"{self._f.title()} (Audio Op)"
   
     @classmethod
     def INPUT_TYPES(cls):
@@ -29,120 +37,82 @@ class SimpleSignalOperation:
         return {"y":y, "sr":sr}
 
 
-# simple_signal_operations = {
-#     'raw': lambda y, sr: y,
-#     ##########
-
-
-
-#     'novelty': librosa.onset.onset_strength,
 class OpNovelty(SimpleSignalOperation):
-    f = simple_signal_operations['novelty']
-
-  
-
-#     'predominant_pulse': librosa.beat.plp,
-class Oppredominant_pulse(SimpleSignalOperation):
-    f = simple_signal_operations['predominant_pulse']
-
-#     'bandpass': bandpass,
-class Opbandpass(SimpleSignalOperation):
-    f = simple_signal_operations['bandpass']
-
-#     'harmonic': lambda y, sr: librosa.effects.harmonic(y=y),
-class Opharmonic(SimpleSignalOperation):
-    f = simple_signal_operations['harmonic']
-
-#     'percussive': lambda y, sr: librosa.effects.percussive(y=y),
-class Oppercussive(SimpleSignalOperation):
-    f = simple_signal_operations['percussive']
-#     ##########
-
-#     'pow2': lambda y, sr: y**2,
-class Oppow2(SimpleSignalOperation):
-    f = simple_signal_operations['pow2']
-
-#     'stretch': stretch,
-class Opstretch(SimpleSignalOperation):
-    f = simple_signal_operations['stretch']
-
-#     'sqrt': sqrt,
-class Opsqrt(SimpleSignalOperation):
-    f = simple_signal_operations['sqrt']
-
-#     'smoosh': smoosh,
-class Opsmoosh(SimpleSignalOperation):
-    f = simple_signal_operations['smoosh']
-
-#     'pow':_pow,
-class Oppow(SimpleSignalOperation):
-    f = simple_signal_operations['pow']
-#     #################
-
-#     'smooth': smooth,
-class Opsmooth(SimpleSignalOperation):
-    f = simple_signal_operations['smooth']
-
-#     'sustain': sustain,
-class Opsustain(SimpleSignalOperation):
-    f = simple_signal_operations['sustain']
-#     # #########
-
-#     'normalize': normalize,
-class OpNormalize(SimpleSignalOperation):
-    f = simple_signal_operations['normalize']
-
-#     'abs': lambda y, sr: np.abs(np.abs(y)),
-class Opabs(SimpleSignalOperation):
-    f = simple_signal_operations['abs']
-
-#     'threshold': threshold,
-class Opthreshold(SimpleSignalOperation):
-    f = simple_signal_operations['threshold']
-  
-#     'clamp': clamp,
-class Opclamp(SimpleSignalOperation):
-    f = simple_signal_operations['clamp']
-  
-#     'modulo': modulo,
-class Opmodulo(SimpleSignalOperation):
-    f = simple_signal_operations['modulo']
-  
-#     'quantize':quantize,
-class OpQuantize(SimpleSignalOperation):
-    f = simple_signal_operations['quantize']
-# }
+    _f = 'novelty'
 
 
-# can i just metaclass this?
-class OpRms(SimpleSignalOperation):
-    f = simple_signal_operations['rms']
+class OpPredominant_pulse(SimpleSignalOperation):
+    _f = 'predominant_pulse'
+
+
+class OpBandpass(SimpleSignalOperation):
+    _f = 'bandpass'
+
+
+class OpHarmonic(SimpleSignalOperation):
+    _f = 'harmonic'
+
+
+class OpPercussive(SimpleSignalOperation):
+    _f = 'percussive'
+
+
+class OpPow2(SimpleSignalOperation):
+    _f = 'pow2'
+
+
+class OpStretch(SimpleSignalOperation):
+    _f = 'stretch'
+
+
+class OpSqrt(SimpleSignalOperation):
+    _f = 'sqrt'
+
+
+class OpSmoosh(SimpleSignalOperation):
+    _f = 'smoosh'
+
+
+class OpPow(SimpleSignalOperation):
+    _f = 'pow'
+
+
+class OpSmooth(SimpleSignalOperation):
+    _f = 'smooth'
+
+
+class OpSustain(SimpleSignalOperation):
+    _f = 'sustain'
     
-#     'rms': lambda y, sr: normalize(librosa.feature.rms(y=y).ravel(), sr),
-#class OpRms:
-# #class SimpleSignalOperation:
-#     CATEGORY=CATEGORY
-#     RETURN_TYPES=("SIGNAL",)
-#     FUNCTION = "main"
 
-#     #f: Callable = None # lazy abstract method
+class OpNormalize(SimpleSignalOperation):
+    _f = 'normalize'
+
+
+class OpAbs(SimpleSignalOperation):
+    _f = 'abs'
+
+
+class OpThreshold(SimpleSignalOperation):
+    _f = 'threshold'
   
-#     @classmethod
-#     def INPUT_TYPES(cls):
-#         outv = {
-#             "required": {
-#                 "signal": ("SIGNAL",{}),
-#             }
-#         }
-#         return outv
 
-#     def main(self, signal:dict, **kargs):
-#         y, sr = signal.get("y"), signal.get("sr")
-#         y, sr = self.f(y, sr)
-#         outv = {"y":y, "sr":sr}
-#         return (outv,)
+class OpClamp(SimpleSignalOperation):
+    _f = 'clamp'
+  
 
-# TODO: all the other ops
+class OpModulo(SimpleSignalOperation):
+    _f = 'modulo'
+  
+
+class OpQuantize(SimpleSignalOperation):
+    _f = 'quantize'
+
+
+class OpRms(SimpleSignalOperation):
+    _f = 'rms'
+    
+
 
 NODE_CLASS_MAPPINGS = {
     "OpRms": OpRms,
@@ -150,5 +120,5 @@ NODE_CLASS_MAPPINGS = {
 
 # A dictionary that contains the friendly/humanly readable titles for the nodes
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "OpRms": "OpRms"
+    "OpRms": OpRms.alias
 }
