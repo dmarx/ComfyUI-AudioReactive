@@ -9,7 +9,7 @@ class SimpleSignalOperation:
     RETURN_TYPES=("SIGNAL",)
     FUNCTION = "main"
 
-    _f: Callable = None # lazy abstract method
+    f: Callable = None # lazy abstract method
   
     @classmethod
     def INPUT_TYPES(cls):
@@ -22,7 +22,7 @@ class SimpleSignalOperation:
 
     def main(self, signal, **kargs):
         y, sr = signal.get("y"), signal.get("sr")
-        y, sr = f(y, sr)
+        y, sr = self.f(y, sr)
         return {"y":y, "sr":sr)
 
 
