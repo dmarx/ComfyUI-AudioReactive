@@ -45,16 +45,19 @@ NODE_DISPLAY_NAME_MAPPINGS["ARReadAudio"] = "Read Audio Fpath"
 def full_width_plot():
     ax = plt.gca()
     ax.figure.set_figwidth(20)
-    plt.show()
+    #plt.show()
 
-def display_signal(y, sr, show_spec=True, title=None, start_time=0, end_time=9999):
+#def display_signal(
+def draw_signal(
+    y, sr, raw=True, #show_spec=True, title=None, 
+                   start_time=0, end_time=9999):
 
 #     if show_spec:
 #         frame_time = librosa.samples_to_time(np.arange(len(normalized_signal)), sr=sr)
 #     else:
 #         frame_time = librosa.frames_to_time(np.arange(len(normalized_signal)), sr=sr)
 
-    if show_spec:
+    if raw: # show_spec:
         #librosa.display.waveshow(y, sr=sr)
         times = librosa.samples_to_time(np.arange(len(y)), sr=sr)
     else:
@@ -71,24 +74,46 @@ def display_signal(y, sr, show_spec=True, title=None, start_time=0, end_time=999
     y = y[start_idx:end_idx]
 
     plt.plot(times, y)
-    if title:
-        plt.title(title)
+    #if title:
+    #    plt.title(title)
     full_width_plot()
 
-    if show_spec:
-        try:
-            M = librosa.feature.melspectrogram(y=y, sr=sr)
-            librosa.display.specshow(librosa.power_to_db(M, ref=np.max),
-                             y_axis='mel', x_axis='time')
-            full_width_plot()
+    # if show_spec:
+    #     try:
+    #         M = librosa.feature.melspectrogram(y=y, sr=sr)
+    #         librosa.display.specshow(librosa.power_to_db(M, ref=np.max),
+    #                          y_axis='mel', x_axis='time')
+    #         full_width_plot()
 
-        except:
-            pass
+    #     except:
+    #         pass
 
     # plt.plot(frame_time, y)
     # if title:
     #     plt.title(title)
     # full_width_plot()
+
+
+    # Save the plot to a BytesIO object
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight')
+    plt.close() # no idea if this makes a difference
+    buf.seek(0)
+
+    # Read the image into a numpy array, converting it to RGB mode
+    pil_image = Image.open(buf).convert('RGB')
+    #plot_array = np.array(pil_image) #.astype(np.uint8)
+
+    # Convert the array to the desired shape [batch, channels, width, height]
+    #plot_array = np.transpose(plot_array, (2, 0, 1))  # Reorder to [channels, width, height]
+    #plot_array = np.expand_dims(plot_array, axis=0)   # Add the batch dimension
+    #plot_array = torch.tensor(plot_array) #.float()
+    #plot_array = torch.from_numpy(plot_array)
+
+    img_tensor = TT.ToTensor()(pil_image)
+    img_tensor = img_tensor.unsqueeze(0)
+    img_tensor = img_tensor.permute([0, 2, 3, 1])
+    return img_tensor
 
 ############################
 
@@ -171,7 +196,7 @@ def plot_curve(curve, n, show_legend, is_pgroup=False):
         img_tensor = img_tensor.permute([0, 2, 3, 1])
         return img_tensor
 
-class KfCurveDraw:
+class ARDrawSignal:
     CATEGORY = f"{CATEGORY}/experimental"
     FUNCTION = "main"
     RETURN_TYPES = ("IMAGE",)
@@ -180,12 +205,10 @@ class KfCurveDraw:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "curve": ("KEYFRAMED_CURVE", {"forceInput": True,}),
-                "n": ("INT", {"default": 64}),
-                "show_legend": ("BOOLEAN", {"default": True}),
+                "signal": ("SIGNAL", {"forceInput": True,}),
             }
         }
 
-    def main(self, curve, n, show_legend):
-        img_tensor = plot_curve(curve, n, show_legend, is_pgroup=False)
+    def main(self, signal):
+        img_tensor = draw_signal(signal['y'], signal['sr'])
         return (img_tensor,)
