@@ -22,3 +22,8 @@ class ARReadAudio:
             }
         }
         return outv
+
+    def main(self, fpath):
+        signal = read_audio_file(signal_fpath)
+        return (signal,)
+        
