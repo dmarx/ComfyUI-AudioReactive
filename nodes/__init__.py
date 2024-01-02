@@ -27,3 +27,6 @@ class ARReadAudio:
         signal = read_audio_file(signal_fpath)
         return (signal,)
         
+
+NODE_CLASS_MAPPINGS["ARReadAudio"] = ARReadAudio
+NODE_DISPLAY_NAME_MAPPINGS["ARReadAudio"] = "Read Audio Fpath"
