@@ -9,6 +9,7 @@ import numpy as np
 import io
 from PIL import Image
 import torchvision.transforms as TT
+import keyframed as kf
 
 CATEGORY="AudioReactive"
 
@@ -198,7 +199,7 @@ def plot_curve(curve, n, show_legend, is_pgroup=False):
         return img_tensor
 
 class ARDrawSignal:
-    CATEGORY = f"{CATEGORY}/experimental"
+    CATEGORY = f"{CATEGORY}"
     FUNCTION = "main"
     RETURN_TYPES = ("IMAGE",)
 
@@ -218,6 +219,30 @@ class ARDrawSignal:
         )
         return (img_tensor,)
 
+
+class SignalToCurve:
+    CATEGORY = f"{CATEGORY}"
+    FUNCTION = "main"
+    RETURN_TYPES = ("CURVE",)
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "signal": ("SIGNAL", {"forceInput": True,}),
+            }
+        }
+
+    def main(self, signal, signal_name=None):
+        driving_signal = signal["y"]
+        sr = signal["sr"]
+        if signal.get('is_raw',True):
+            frame_time = librosa.samples_to_time(np.arange(len(driving_signal)), sr=sr)
+        else:
+            frame_time = librosa.frames_to_time(np.arange(len(driving_signal)), sr=sr)
+        
+        driving_signal_kf = kf.Curve({t:v for t,v in zip(frame_time, driving_signal)}, label=signal_name)
+        return (driving_signal_kf,)
 
 NODE_CLASS_MAPPINGS["ARDrawSignal"] = ARDrawSignal
 NODE_DISPLAY_NAME_MAPPINGS["ARDrawSignal"] = "Draw Audio Signal"
