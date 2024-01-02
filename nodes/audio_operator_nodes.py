@@ -8,6 +8,7 @@ class SimpleSignalOperation:
     CATEGORY=CATEGORY
     RETURN_TYPES=("SIGNAL",)
     FUNCTION = "main"
+    _IS_RAW = True
 
     #f: Callable = None # lazy abstract method
     _f: str = ''
@@ -34,6 +35,8 @@ class SimpleSignalOperation:
         #return {"y":y, "sr":sr}
         #signal = self.f(y, sr)
         signal = self.f(y=y, sr=sr)
+        if not self._is_raw:
+            signal['is_raw']=False
         return (signal,)
 
 
