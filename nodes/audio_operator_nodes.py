@@ -35,7 +35,7 @@ class SimpleSignalOperation:
         #return {"y":y, "sr":sr}
         #signal = self.f(y, sr)
         signal = self.f(y=y, sr=sr)
-        if not self._is_raw:
+        if not self._IS_RAW:
             signal['is_raw']=False
         return (signal,)
 
