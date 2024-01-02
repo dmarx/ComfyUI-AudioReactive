@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 from PIL import Image
+import torchvision.transforms as TT
 
 CATEGORY="AudioReactive"
 
