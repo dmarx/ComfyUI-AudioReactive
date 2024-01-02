@@ -32,7 +32,8 @@ class SimpleSignalOperation:
         y, sr = signal.get("y"), signal.get("sr")
         #y, sr = self.f(y, sr)
         #return {"y":y, "sr":sr}
-        signal = self.f(y, sr)
+        #signal = self.f(y, sr)
+        signal = self.f(y=y, sr=sr)
         return (signal,)
 
 
