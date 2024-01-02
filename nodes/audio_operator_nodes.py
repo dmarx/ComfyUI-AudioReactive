@@ -39,7 +39,7 @@ class SimpleSignalOperation:
             y = self.f(y=y, sr=sr)
         except TypeError:
             y = self.f(y, sr)
-        outv = {"y":y, "sr":sr, is_raw=signal.get('is_raw')}
+        outv = {"y":y, "sr":sr, "is_raw":signal.get('is_raw')}
         if not self._IS_RAW:
             outv['is_raw']=False
         return (signal,)
