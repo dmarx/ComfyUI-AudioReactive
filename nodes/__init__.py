@@ -220,6 +220,12 @@ class ARDrawSignal:
         return (img_tensor,)
 
 
+NODE_CLASS_MAPPINGS["ARDrawSignal"] = ARDrawSignal
+NODE_DISPLAY_NAME_MAPPINGS["ARDrawSignal"] = "Draw Audio Signal"
+
+############################################
+
+
 class SignalToCurve:
     CATEGORY = f"{CATEGORY}"
     FUNCTION = "main"
@@ -244,7 +250,7 @@ class SignalToCurve:
         driving_signal_kf = kf.Curve({t:v for t,v in zip(frame_time, driving_signal)}, label=signal_name)
         return (driving_signal_kf,)
 
-NODE_CLASS_MAPPINGS["ARDrawSignal"] = ARDrawSignal
-NODE_DISPLAY_NAME_MAPPINGS["ARDrawSignal"] = "Draw Audio Signal"
+NODE_CLASS_MAPPINGS["SignalToCurve"] = SignalToCurve
+NODE_DISPLAY_NAME_MAPPINGS["SignalToCurve"] = "SignalToCurve"
 
 ############################################
