@@ -42,7 +42,7 @@ class SimpleSignalOperation:
         outv = {"y":y, "sr":sr, "is_raw":signal.get('is_raw')}
         if not self._IS_RAW:
             outv['is_raw']=False
-        return (signal,)
+        return (outv,)
 
 
 class OpNovelty(SimpleSignalOperation):
