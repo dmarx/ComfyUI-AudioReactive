@@ -211,7 +211,11 @@ class ARDrawSignal:
         }
 
     def main(self, signal):
-        img_tensor = draw_signal(signal['y'], signal['sr'])
+        img_tensor = draw_signal(
+            y=signal['y'], 
+            sr=signal['sr'], 
+            raw=signal.get('is_raw',True),
+        )
         return (img_tensor,)
 
 
