@@ -30,8 +30,10 @@ class SimpleSignalOperation:
 
     def main(self, signal, **kargs):
         y, sr = signal.get("y"), signal.get("sr")
-        y, sr = self.f(y, sr)
-        return {"y":y, "sr":sr}
+        #y, sr = self.f(y, sr)
+        #return {"y":y, "sr":sr}
+        signal = self.f(y, sr)
+        return (signal,)
 
 
 class OpNovelty(SimpleSignalOperation):
