@@ -209,11 +209,12 @@ class ARDrawSignal:
             }
         }
 
+    def main(self, signal):
+        img_tensor = draw_signal(signal['y'], signal['sr'])
+        return (img_tensor,)
+
+
 NODE_CLASS_MAPPINGS["ARDrawSignal"] = ARDrawSignal
 NODE_DISPLAY_NAME_MAPPINGS["ARDrawSignal"] = "Draw Audio Signal"
 
 ############################################
-
-    def main(self, signal):
-        img_tensor = draw_signal(signal['y'], signal['sr'])
-        return (img_tensor,)
