@@ -229,7 +229,7 @@ NODE_DISPLAY_NAME_MAPPINGS["ARDrawSignal"] = "Draw Audio Signal"
 class SignalToCurve:
     CATEGORY = f"{CATEGORY}"
     FUNCTION = "main"
-    RETURN_TYPES = ("CURVE",)
+    RETURN_TYPES = ("KEYFRAMED_CURVE",)
 
     @classmethod
     def INPUT_TYPES(cls):
