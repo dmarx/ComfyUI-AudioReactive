@@ -1,4 +1,4 @@
-print("Let's get AuDiOrEaCtIvE!!!"
+print("Let's get AuDiOrEaCtIvE!!!")
 
 import os
 import subprocess
