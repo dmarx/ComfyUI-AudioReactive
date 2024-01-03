@@ -1,14 +1,3 @@
-#from nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
-from .nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
-#from .nodes.audio_nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
-
-from loguru import logger
-
-logger.info(NODE_CLASS_MAPPINGS)
-logger.info(NODE_DISPLAY_NAME_MAPPINGS)
-
-__all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
-
 import os
 import subprocess
 import importlib.util
@@ -41,3 +30,17 @@ is_installed("librosa")
 
 print(os.environ.get('COMFYUI_DEBUG_MODE'))
 
+##############
+
+# NB: nodes import needs to be after ensuring dependencies installed
+
+#from nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+from .nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+#from .nodes.audio_nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
+from loguru import logger
+
+logger.info(NODE_CLASS_MAPPINGS)
+logger.info(NODE_DISPLAY_NAME_MAPPINGS)
+
+__all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
