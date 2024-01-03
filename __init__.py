@@ -1,3 +1,5 @@
+print("Let's get AuDiOrEaCtIvE!!!"
+
 import os
 import subprocess
 import importlib.util
@@ -26,6 +28,7 @@ def is_installed(package, package_overwrite=None):
 is_installed("scipy")
 is_installed("scikit-learn")
 is_installed("librosa")
+is_installed("loguru")
 
 
 print(os.environ.get('COMFYUI_DEBUG_MODE'))
